@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [activeItem, setActiveItem] = useState('dashboard');
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const menuItems = [
     {
@@ -50,17 +51,20 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
       )
-    },
-    {
-      id: 'settings',
-      name: 'Settings',
-      icon: (
-        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      )
     }
+  ];
+
+  const filterOptions = [
+    { id: 'trending', name: 'Trending', icon: '🔥' },
+    { id: 'popular', name: 'Popular', icon: '⭐' },
+    { id: 'top-rated', name: 'Top Rated', icon: '🏆' },
+    { id: 'upcoming', name: 'Upcoming', icon: '📅' }
+  ];
+
+  const genres = [
+    'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary',
+    'Drama', 'Family', 'Fantasy', 'History', 'Horror', 'Music', 'Mystery',
+    'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western'
   ];
 
   return (
@@ -75,53 +79,104 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       
       {/* Sidebar */}
       <aside className={`
-        fixed top-0 left-0 z-30 h-full w-64 bg-gray-900 border-r border-gray-700 transition-transform duration-300 ease-in-out
+        fixed top-0 left-0 z-30 h-full ${isCollapsed ? 'w-16' : 'w-64'} border-r border-gray-700 transition-all duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 lg:static lg:z-auto
-      `}>
+      `} style={{ backgroundColor: '#00225B' }}>
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Navigation</h2>
-            <button 
-              onClick={toggleSidebar}
-              className="text-gray-400 hover:text-white lg:hidden"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            {!isCollapsed && <h2 className="text-lg font-semibold text-white">Navigation</h2>}
+            <div className="flex items-center space-x-2">
+              {/* Collapse/Expand button for desktop */}
+              <button 
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                className="text-gray-300 hover:text-white hidden lg:block p-1 rounded transition-colors"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isCollapsed ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
+                </svg>
+              </button>
+              {/* Close button for mobile */}
+              <button 
+                onClick={toggleSidebar}
+                className="text-gray-300 hover:text-white lg:hidden p-1 rounded transition-colors"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Menu Items */}
-          <nav className="flex-1 p-4">
+          <nav className="flex-1 p-4 overflow-y-auto">
             <ul className="space-y-2">
               {menuItems.map((item) => (
                 <li key={item.id}>
                   <button
                     onClick={() => setActiveItem(item.id)}
                     className={`
-                      w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors duration-200
+                      w-full flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'} px-3 py-3 rounded-lg text-left transition-colors duration-200
                       ${activeItem === item.id 
-                        ? 'bg-blue-600 text-white' 
-                        : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                        ? 'text-white' 
+                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                       }
                     `}
+                    style={activeItem === item.id ? { backgroundColor: '#FF8408' } : {}}
+                    title={isCollapsed ? item.name : ''}
                   >
                     {item.icon}
-                    <span>{item.name}</span>
+                    {!isCollapsed && <span>{item.name}</span>}
                   </button>
                 </li>
               ))}
             </ul>
+
+            {/* Filter Options */}
+            {!isCollapsed && (
+              <div className="mt-6">
+                <h3 className="text-sm font-semibold text-gray-300 mb-3 px-3">FILTERS</h3>
+                <ul className="space-y-1">
+                  {filterOptions.map((filter) => (
+                    <li key={filter.id}>
+                      <button className="w-full flex items-center space-x-3 px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors text-sm">
+                        <span className="text-base">{filter.icon}</span>
+                        <span>{filter.name}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Genres */}
+            {!isCollapsed && (
+              <div className="mt-6">
+                <h3 className="text-sm font-semibold text-gray-300 mb-3 px-3">GENRES</h3>
+                <div className="max-h-48 overflow-y-auto">
+                  <ul className="space-y-1">
+                    {genres.map((genre) => (
+                      <li key={genre}>
+                        <button className="w-full text-left px-3 py-1.5 text-gray-400 hover:bg-gray-700 hover:text-white rounded transition-colors text-sm">
+                          {genre}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t border-gray-700">
-            <div className="text-xs text-gray-400">
-              Movies Dashboard v1.0
+          {!isCollapsed && (
+            <div className="p-4 border-t border-gray-700">
+              <div className="text-xs text-gray-400">
+                MovieHub v1.0
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </aside>
     </>
