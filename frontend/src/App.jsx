@@ -1,9 +1,13 @@
 
 import React from 'react'
+import Layout from './components/Layout'
+import Dashboard from './pages/Dashboard'
 
 function App() {
   return (
-    <div className='bg-gray-800 text-white p-4'>App</div>
+    <Layout>
+      <Dashboard />
+    </Layout>
   )
 }
 
