@@ -75,17 +75,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       
       {/* Sidebar */}
       <aside className={`
-        fixed top-0 left-0 z-30 h-full w-64 bg-gray-900 border-r border-gray-700 transition-transform duration-300 ease-in-out
+        fixed top-0 left-0 z-30 h-full w-64 border-r transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 lg:static lg:z-auto
-      `}>
+      `} style={{ backgroundColor: 'var(--navy)', borderColor: 'var(--navy)' }}>
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-700">
+          <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
             <h2 className="text-lg font-semibold text-white">Navigation</h2>
             <button 
               onClick={toggleSidebar}
-              className="text-gray-400 hover:text-white lg:hidden"
+              className="text-gray-300 hover:text-white lg:hidden"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -103,10 +103,21 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     className={`
                       w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors duration-200
                       ${activeItem === item.id 
-                        ? 'bg-blue-600 text-white' 
-                        : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                        ? 'text-white' 
+                        : 'text-gray-300 hover:text-white'
                       }
                     `}
+                    style={activeItem === item.id ? { backgroundColor: 'var(--brand-orange)' } : {}}
+                    onMouseEnter={(e) => {
+                      if (activeItem !== item.id) {
+                        e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (activeItem !== item.id) {
+                        e.target.style.backgroundColor = 'transparent';
+                      }
+                    }}
                   >
                     {item.icon}
                     <span>{item.name}</span>
@@ -117,8 +128,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t border-gray-700">
-            <div className="text-xs text-gray-400">
+          <div className="p-4 border-t" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+            <div className="text-xs text-gray-300">
               Movies Dashboard v1.0
             </div>
           </div>

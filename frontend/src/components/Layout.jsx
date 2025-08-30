@@ -10,13 +10,13 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-800">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--brand-black)' }}>
       {/* Enhanced Navbar with mobile menu button */}
-      <nav className="bg-gray-900 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
+      <nav className="border-b px-4 py-3 flex items-center justify-between" style={{ backgroundColor: 'var(--navy)', borderColor: 'var(--navy)' }}>
         {/* Mobile menu button */}
         <button
           onClick={toggleSidebar}
-          className="text-gray-400 hover:text-white lg:hidden mr-4"
+          className="text-gray-300 hover:text-white lg:hidden mr-4"
         >
           <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -36,10 +36,11 @@ const Layout = ({ children }) => {
             <input
               type="text"
               placeholder="Search movies..."
-              className="w-full bg-gray-800 text-white placeholder-gray-400 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full text-white placeholder-gray-400 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:ring-2"
+              style={{ backgroundColor: 'var(--brand-black)', '--tw-ring-color': 'var(--brand-orange)' }}
             />
             <svg
-              className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
+              className="absolute left-3 top-2.5 h-5 w-5 text-gray-300"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -56,7 +57,7 @@ const Layout = ({ children }) => {
 
         {/* User Profile */}
         <div className="flex items-center space-x-4">
-          <button className="text-gray-400 hover:text-white hidden sm:block">
+          <button className="text-gray-300 hover:text-white hidden sm:block" style={{ '--tw-hover-color': 'var(--brand-orange)' }}>
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
