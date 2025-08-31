@@ -28,7 +28,7 @@ function App() {
 
     switch (page) {
       case 'home':
-        return <Dashboard />
+        return <Dashboard onNavigate={setPage} />
       case 'movies':
         return <Movies />
       case 'tv':
@@ -38,7 +38,7 @@ function App() {
       case 'profile':
         return <Profile />
       default:
-        return <Dashboard />
+        return <Dashboard onNavigate={setPage} />
     }
   }
 
