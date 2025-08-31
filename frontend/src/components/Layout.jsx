@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
-import Sidebar from './Sidebar';
+import Footer from './Footer';
 import MovieModal from './MovieModal';
 import { useEffect } from 'react';
 
 const Layout = ({ children, activePage, onNavigate }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
   const [modalOpen, setModalOpen] = useState(false);
+  
   useEffect(() => {
     const handler = async (e) => {
       const id = e.detail;
@@ -31,30 +26,25 @@ const Layout = ({ children, activePage, onNavigate }) => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800 transition-colors duration-200">
-      {/* Use Navbar component and pass handlers */}
+      {/* Navbar with navigation and search */}
       <Navbar
-        onToggleSidebar={toggleSidebar}
         activePage={activePage}
         onNavigate={onNavigate}
       />
 
-      {/* Main Layout */}
-      <div className="flex">
-        {/* Sidebar */}
-        <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} onNavigate={onNavigate} />
-        
-        {/* Main Content */}
-        <main className="flex-1 md:ml-64">
-          <div className="p-4 sm:p-6">
-            {children}
-          </div>
-        </main>
-      </div>
+      {/* Main Content */}
+      <main className="w-full">
+        <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+          {children}
+        </div>
+      </main>
+      
+      {/* Footer */}
+      <Footer />
+      
       <MovieModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };
-
-
 
 export default Layout;
