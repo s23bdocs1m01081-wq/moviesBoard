@@ -4,7 +4,6 @@ const Navbar = ({ onNavigate, activePage }) => {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light';
   });
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -15,10 +14,6 @@ const Navbar = ({ onNavigate, activePage }) => {
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
-  };
-
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
   };
 
   const toggleMobileMenu = () => {
@@ -137,20 +132,6 @@ const Navbar = ({ onNavigate, activePage }) => {
 
             {/* Right side controls */}
             <div className="flex items-center space-x-2">
-              {/* Search button */}
-              <button
-                onClick={toggleSearch}
-                className="p-2 rounded-full transition-colors duration-200"
-                style={{
-                  color: theme === 'dark' ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)'
-                }}
-                aria-label="Search"
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-
               {/* Theme toggle button */}
               <button
                 onClick={toggleTheme}
@@ -190,19 +171,26 @@ const Navbar = ({ onNavigate, activePage }) => {
 
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <div 
+              className="md:hidden mt-4 pb-4 border-t pt-4"
+              style={{
+                borderColor: theme === 'dark' ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)'
+              }}
+            >
               <div className="grid grid-cols-2 gap-2">
                 {menuItems.map((item) => (
                   <button
                     key={item.id}
                     onClick={() => handleNavigation(item.id)}
-                    className={`
-                      flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200
-                      ${activePage === item.id 
-                        ? 'bg-blue-600 text-white' 
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                      }
-                    `}
+                    className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+                    style={{
+                      backgroundColor: activePage === item.id 
+                        ? 'rgb(37, 99, 235)' 
+                        : 'transparent',
+                      color: activePage === item.id 
+                        ? 'white' 
+                        : theme === 'dark' ? 'rgb(209, 213, 219)' : 'rgb(55, 65, 81)'
+                    }}
                   >
                     {item.icon}
                     <span>{item.name}</span>
@@ -213,47 +201,6 @@ const Navbar = ({ onNavigate, activePage }) => {
           )}
         </div>
       </nav>
-
-      {/* Search Section - Below Navbar */}
-      {isSearchOpen && (
-        <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-4 transition-colors duration-200 z-30">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Search Movies & TV Shows</h2>
-              <button
-                onClick={toggleSearch}
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white p-1 rounded-full"
-                aria-label="Close search"
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="relative">
-              <input
-                type="search"
-                placeholder="Search movies, TV shows..."
-                className="w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-300 dark:border-gray-600 transition-colors duration-200"
-                autoFocus
-              />
-              <svg
-                className="absolute left-3 top-3.5 h-5 w-5 text-gray-500 dark:text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

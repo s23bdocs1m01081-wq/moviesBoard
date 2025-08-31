@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { discoverTV, getTVGenres } from '../api';
+import { discoverTV, searchTV, getTVGenres } from '../api';
 import TVCard from '../components/TVCard';
 
 const TVShows = () => {
@@ -9,7 +9,7 @@ const TVShows = () => {
   const [loading, setLoading] = useState(false);
   const [genres, setGenres] = useState([]);
   const [loadingGenres, setLoadingGenres] = useState(false);
-  const [filters, setFilters] = useState({ with_genres: '', sort_by: 'popularity.desc', year: '' });
+  const [filters, setFilters] = useState({ with_genres: '', sort_by: 'popularity.desc', year: '', search: '' });
   const loader = useRef(null);
 
   // Load genres for filter dropdown
@@ -36,12 +36,20 @@ const TVShows = () => {
     const load = async (p = 1) => {
       setLoading(true);
       try {
-        const params = {};
-        if (filters.with_genres) params.with_genres = filters.with_genres;
-        if (filters.sort_by) params.sort_by = filters.sort_by;
-        if (filters.year) params.first_air_date_year = filters.year;
-
-        const res = await discoverTV(params, p);
+        let res;
+        
+        // Use search API if there's a search query
+        if (filters.search && filters.search.trim()) {
+          res = await searchTV(filters.search.trim(), p);
+        } else {
+          // Use discover API with filters
+          const params = {};
+          if (filters.with_genres) params.with_genres = filters.with_genres;
+          if (filters.sort_by) params.sort_by = filters.sort_by;
+          if (filters.year) params.first_air_date_year = filters.year;
+          res = await discoverTV(params, p);
+        }
+        
         if (!mounted) return;
         setShows(prev => p === 1 ? res.results : [...prev, ...res.results]);
         setTotalPages(res.total_pages || 1);
@@ -53,7 +61,7 @@ const TVShows = () => {
     };
     load(page);
     return () => { mounted = false; };
-  }, [page, filters.with_genres, filters.sort_by, filters.year]);
+  }, [page, filters.with_genres, filters.sort_by, filters.year, filters.search]);
 
   // IntersectionObserver for infinite scroll
   useEffect(() => {
@@ -79,7 +87,33 @@ const TVShows = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">TV Shows</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-0">TV Shows</h1>
+        
+        {/* Search Bar */}
+        <div className="relative w-full sm:w-96 mb-4 sm:mb-0">
+          <input
+            type="search"
+            placeholder="Search TV shows..."
+            value={filters.search}
+            onChange={(e) => onFilterChange({ search: e.target.value })}
+            className="w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-300 dark:border-gray-600 transition-colors duration-200"
+          />
+          <svg
+            className="absolute left-3 top-3.5 h-5 w-5 text-gray-500 dark:text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+      </div>
 
       <div className="flex flex-wrap items-center gap-3 mb-4">
         <div>
@@ -109,7 +143,7 @@ const TVShows = () => {
         </div>
 
         <div className="ml-auto">
-          <button className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200" onClick={() => { setFilters({ with_genres: '', sort_by: 'popularity.desc', year: '' }); setShows([]); setPage(1); }}>
+          <button className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200" onClick={() => { setFilters({ with_genres: '', sort_by: 'popularity.desc', year: '', search: '' }); setShows([]); setPage(1); }}>
             Clear
           </button>
         </div>

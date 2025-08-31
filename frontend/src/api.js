@@ -53,6 +53,15 @@ export async function searchMovies(query, page = 1) {
 	}
 }
 
+export async function searchTV(query, page = 1) {
+	try {
+		const res = await client.get('/search/tv', { params: { query, page } });
+		return res.data;
+	} catch (err) {
+		throw err;
+	}
+}
+
 export async function discoverTV(params = {}, page = 1) {
 	try {
 		const res = await client.get('/discover/tv', { params: { ...params, page } });
@@ -80,4 +89,4 @@ export async function getTVGenres() {
 	}
 }
 
-export default { getMovieDetails, searchMovies, discoverTV, discoverMovies, getTVGenres };
+export default { getMovieDetails, searchMovies, searchTV, discoverTV, discoverMovies, getTVGenres };
