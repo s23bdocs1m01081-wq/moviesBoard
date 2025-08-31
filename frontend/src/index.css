@@ -1,1 +1,58 @@
-@import 'tailwindcss'
+@import 'tailwindcss';
+
+/* Base styles */
+:root {
+  color-scheme: light dark;
+}
+
+/* Apply a smooth transition to all elements during theme changes */
+* {
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Body styles */
+body {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.dark body {
+  background-color: #1f2937;
+  color: #f3f4f6;
+}
+
+/* Dark theme scrollbar styling */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgb(55, 65, 81);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgb(107, 114, 128);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgb(156, 163, 175);
+}
+
+/* Light theme scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(243, 244, 246);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(209, 213, 219);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(156, 163, 175);
+}

@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 
+// Initialize theme from localStorage or default to 'light'
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.classList.add(savedTheme);
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
