@@ -6,19 +6,47 @@
 }
 
 /* Apply a smooth transition to all elements during theme changes */
-* {
+*,
+*::before,
+*::after {
   transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-/* Body styles */
-body {
-  background-color: #f3f4f6;
-  color: #111827;
+/* HTML and body styling for proper theme support */
+html {
+  min-height: 100vh;
+  background-color: rgb(243, 244, 246) !important; /* gray-100 */
+  color: rgb(17, 24, 39) !important; /* gray-900 */
 }
 
-.dark body {
-  background-color: #1f2937;
-  color: #f3f4f6;
+html.dark {
+  background-color: rgb(31, 41, 55) !important; /* gray-800 */
+  color: rgb(243, 244, 246) !important; /* gray-100 */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: inherit !important;
+  color: inherit !important;
+}
+
+#root {
+  min-height: 100vh;
+  background: inherit !important;
+  color: inherit !important;
+}
+
+/* Force navbar theme styles */
+nav {
+  background-color: white !important;
+  border-color: rgb(229, 231, 235) !important; /* gray-200 */
+}
+
+html.dark nav {
+  background-color: rgb(17, 24, 39) !important; /* gray-900 */
+  border-color: rgb(55, 65, 81) !important; /* gray-700 */
 }
 
 /* Dark theme scrollbar styling */

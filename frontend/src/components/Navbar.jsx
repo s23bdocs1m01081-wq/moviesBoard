@@ -75,12 +75,23 @@ const Navbar = ({ onNavigate, activePage }) => {
 
   return (
     <>
-      <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3 transition-colors duration-200 sticky top-0 z-40">
+      <nav 
+        className="border-b px-4 py-3 transition-colors duration-200 sticky top-0 z-40"
+        style={{
+          backgroundColor: theme === 'dark' ? 'rgb(17, 24, 39)' : 'white',
+          borderColor: theme === 'dark' ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)'
+        }}
+      >
         <div className="max-w-7xl mx-auto">
           {/* Top section with logo and controls */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="text-xl font-bold text-gray-900 dark:text-white flex items-center space-x-2">
+              <div 
+                className="text-xl font-bold flex items-center space-x-2"
+                style={{
+                  color: theme === 'dark' ? 'white' : 'rgb(17, 24, 39)'
+                }}
+              >
                 <span className="text-2xl">🎬</span>
                 <span>MovieHub</span>
               </div>
@@ -96,9 +107,27 @@ const Navbar = ({ onNavigate, activePage }) => {
                     flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200
                     ${activePage === item.id 
                       ? 'bg-blue-600 text-white' 
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+                      : ''
                     }
                   `}
+                  style={{
+                    color: activePage === item.id 
+                      ? 'white' 
+                      : theme === 'dark' ? 'rgb(209, 213, 219)' : 'rgb(55, 65, 81)',
+                    backgroundColor: activePage === item.id 
+                      ? 'rgb(37, 99, 235)' 
+                      : 'transparent'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (activePage !== item.id) {
+                      e.target.style.backgroundColor = theme === 'dark' ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (activePage !== item.id) {
+                      e.target.style.backgroundColor = 'transparent';
+                    }
+                  }}
                 >
                   {item.icon}
                   <span>{item.name}</span>
@@ -111,7 +140,10 @@ const Navbar = ({ onNavigate, activePage }) => {
               {/* Search button */}
               <button
                 onClick={toggleSearch}
-                className="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
+                className="p-2 rounded-full transition-colors duration-200"
+                style={{
+                  color: theme === 'dark' ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)'
+                }}
                 aria-label="Search"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +154,11 @@ const Navbar = ({ onNavigate, activePage }) => {
               {/* Theme toggle button */}
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="p-2 rounded-full transition-colors duration-200"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)',
+                  color: theme === 'dark' ? 'rgb(209, 213, 219)' : 'rgb(55, 65, 81)'
+                }}
                 aria-label="Toggle theme"
               >
                 {theme === 'dark' ? (
@@ -139,7 +175,10 @@ const Navbar = ({ onNavigate, activePage }) => {
               {/* Mobile menu button */}
               <button
                 onClick={toggleMobileMenu}
-                className="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                className="md:hidden p-2 rounded-lg"
+                style={{
+                  color: theme === 'dark' ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)'
+                }}
                 aria-label="Toggle mobile menu"
               >
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

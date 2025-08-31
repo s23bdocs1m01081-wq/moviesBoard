@@ -25,7 +25,7 @@ const Layout = ({ children, activePage, onNavigate }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 transition-colors duration-200">
+    <div className="min-h-screen transition-colors duration-200">
       {/* Navbar with navigation and search */}
       <Navbar
         activePage={activePage}
