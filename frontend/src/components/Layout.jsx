@@ -44,8 +44,8 @@ const Layout = ({ children, activePage, onNavigate }) => {
         <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} onNavigate={onNavigate} />
         
         {/* Main Content */}
-        <main className="flex-1 lg:ml-0">
-          <div className="p-6">
+        <main className="flex-1 md:ml-64">
+          <div className="p-4 sm:p-6">
             {children}
           </div>
         </main>

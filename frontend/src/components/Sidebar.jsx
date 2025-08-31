@@ -60,7 +60,7 @@ const Sidebar = ({ isOpen, toggleSidebar, onNavigate }) => {
       {/* Mobile backdrop */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
           onClick={toggleSidebar}
         />
       )}
@@ -69,7 +69,7 @@ const Sidebar = ({ isOpen, toggleSidebar, onNavigate }) => {
       <aside className={`
         fixed top-0 left-0 z-30 h-full w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        lg:translate-x-0 lg:static lg:z-auto
+        md:translate-x-0 md:static md:z-auto
       `}>
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
@@ -77,7 +77,7 @@ const Sidebar = ({ isOpen, toggleSidebar, onNavigate }) => {
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Navigation</h2>
             <button 
               onClick={toggleSidebar}
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white lg:hidden transition-colors duration-200"
+              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white md:hidden transition-colors duration-200"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
