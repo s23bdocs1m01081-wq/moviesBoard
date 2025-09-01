@@ -88,7 +88,7 @@ const Navbar = ({ onNavigate, activePage }) => {
                 }}
               >
                 <span className="text-2xl">🎬</span>
-                <span>MovieHub</span>
+                <span>WatchRander</span>
               </div>
             </div>
 

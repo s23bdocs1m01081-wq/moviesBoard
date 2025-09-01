@@ -2,14 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { getMovieDetails } from '../api';
 import VideoPreview from './VideoPreview';
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, showTrailerInfo = false }) => {
   const [trailerKey, setTrailerKey] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Use trailer data from search results if available
+  useEffect(() => {
+    if (movie.videos && movie.videos.length > 0) {
+      const trailer = movie.videos.find(v => v.type === 'Trailer') || movie.videos[0];
+      setTrailerKey(trailer.key);
+    }
+  }, [movie.videos]);
+
   // Fetch trailer data when requested
   const fetchTrailer = async () => {
-    if (trailerKey || loading) return;
+    if (trailerKey || loading || movie.videos) return;
     
     setLoading(true);
     try {
@@ -76,6 +84,19 @@ const MovieCard = ({ movie }) => {
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{movie.title}</h3>
         <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">{movie.year}</p>
+        
+        {/* Show trailer info if from search results */}
+        {showTrailerInfo && movie.hasTrailer && (
+          <div className="mb-2">
+            <span className="inline-flex items-center text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full">
+              <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M8 5v10l8-5-8-5z"/>
+              </svg>
+              {movie.videos?.length || 0} Trailer{movie.videos?.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+        )}
+        
         <div className="flex items-center justify-between">
           {loading && (
             <span className="text-gray-500 dark:text-gray-400 text-sm">Loading...</span>

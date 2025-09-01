@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getTVDetails } from '../api';
 import VideoPreview from './VideoPreview';
 
-const TVCard = ({ show, onClick }) => {
+const TVCard = ({ show, onClick, showTrailerInfo = false }) => {
   const [trailerKey, setTrailerKey] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const poster = show.poster_path ? `https://image.tmdb.org/t/p/w300${show.poster_path}` : 'https://via.placeholder.com/200x300?text=No';
 
+  // Use trailer data from search results if available
+  useEffect(() => {
+    if (show.videos && show.videos.length > 0) {
+      const trailer = show.videos.find(v => v.type === 'Trailer') || show.videos[0];
+      setTrailerKey(trailer.key);
+    }
+  }, [show.videos]);
+
   // Fetch trailer data when requested
   const fetchTrailer = async () => {
-    if (trailerKey || loading) return;
+    if (trailerKey || loading || show.videos) return;
     
     setLoading(true);
     try {
@@ -73,6 +81,19 @@ const TVCard = ({ show, onClick }) => {
       <div className="p-2 text-gray-900 dark:text-white text-sm">
         <div className="font-semibold group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{show.name}</div>
         <div className="text-gray-600 dark:text-gray-400 text-xs">{show.first_air_date?.split('-')[0]}</div>
+        
+        {/* Show trailer info if from search results */}
+        {showTrailerInfo && show.hasTrailer && (
+          <div className="mt-1">
+            <span className="inline-flex items-center text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full">
+              <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M8 5v10l8-5-8-5z"/>
+              </svg>
+              {show.videos?.length || 0} Trailer{show.videos?.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+        )}
+        
         <div className="mt-2 flex justify-between items-center">
           {loading && (
             <span className="text-gray-500 dark:text-gray-400 text-xs">Loading...</span>
